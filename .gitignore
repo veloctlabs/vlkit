@@ -1,0 +1,5 @@
+# local session state written by hooks (when a consumer sets ledger=isolated)
+.vlkit/
+# scratch
+*.tmp
+.DS_Store

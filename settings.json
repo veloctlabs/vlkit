@@ -1,0 +1,48 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/settings-schema.json",
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [ { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/context-readiness.sh", "timeout": 10 } ] }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [ { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/context-hints.sh", "timeout": 5 } ] }
+    ],
+    "PreToolUse": [
+      { "matcher": "Bash", "hooks": [
+        { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/safety-gate.sh", "timeout": 5 },
+        { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/commit-format.sh", "timeout": 5 },
+        { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/ship-gate.sh", "timeout": 5 }
+      ] },
+      { "matcher": "Read|Edit|Bash", "hooks": [
+        { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/secrets-guard.sh", "timeout": 5 }
+      ] }
+    ],
+    "Stop": [
+      { "hooks": [
+        { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/anti-rationalization.sh", "timeout": 5 },
+        { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/session-state-save.sh", "timeout": 5 }
+      ] }
+    ],
+    "SubagentStop": [
+      { "hooks": [ { "type": "command", "command": "bash $HOME/.claude/vlkit/hooks/session-state-save.sh", "timeout": 5 } ] }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash $HOME/.claude/vlkit/hooks/statusline.sh"
+  },
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(**/*.pem)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.git-credentials)",
+      "Read(~/.npmrc)"
+    ]
+  }
+}

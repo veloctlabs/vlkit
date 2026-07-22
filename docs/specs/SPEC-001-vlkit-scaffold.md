@@ -1,6 +1,6 @@
 # SPEC-001: vlkit — reusable Claude Code workflow kit
 
-Status: DRAFT
+Status: SHIPPED
 Lane: full
 Date: 2026-07-22
 

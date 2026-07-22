@@ -1,0 +1,25 @@
+# vlkit.toml — default configuration (ships with the kit)
+#
+# Per-project override: create <project>/.vlkit.toml and set only the keys you
+# change; the rest inherit from this file. Resolver precedence:
+#   <project>/.vlkit.toml  >  ~/.claude/vlkit/vlkit.toml (this, installed copy)  >  hardcoded fallback
+#
+# Only commands and lib/ read this file. Hot-path hooks NEVER read it.
+
+[ledger]
+# "shared"   -> ~/.claude/vlkit/logs/  (one ledger for all projects)
+# "isolated" -> <project>/.vlkit/logs/ (this project keeps its own)
+location = "shared"
+
+[lanes]
+# Default risk lane when a spec header omits one.
+default = "normal"
+
+[gates]
+# Advisory gates can be silenced per project; blocking gates cannot.
+ship_requires_proof = true    # ship-gate blocks push/PR without a proof-of-done row
+anti_rationalization = true   # Stop hook nudges on premature "done" claims
+
+[hints]
+# keyword -> hint text, injected by context-hints on UserPromptSubmit.
+# Empty by default; add your own, e.g.  "migration" = "run the db-migration checklist"
