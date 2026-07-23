@@ -43,8 +43,8 @@ completes with a clear next step, never a dead end.
 ## Acceptance criteria
 
 1. `bash lib/ship/open-pr.sh` with `VLKIT_SHIP_NO_GH=1`, in a repo whose origin
-   is `git@github.com-yuzuyield:yuzuyield/vlkit.git`, prints a line containing
-   `https://github.com/yuzuyield/vlkit/compare/main...<branch>?expand=1` and
+   is `git@github.com-yuzuyield:veloctlabs/vlkit.git`, prints a line containing
+   `https://github.com/veloctlabs/vlkit/compare/main...<branch>?expand=1` and
    exits 0.
 2. Slug derivation is correct for all three remote URL forms
    (`git@github.com-alias:o/r.git`, `git@github.com:o/r.git`,

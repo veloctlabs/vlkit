@@ -17,8 +17,8 @@ url_for() {  # <origin-url> <branch>
 }
 
 echo "slug derivation across remote URL forms:"
-OUT="$(url_for 'git@github.com-yuzuyield:yuzuyield/vlkit.git' featX)"
-printf '%s' "$OUT" | grep -q 'github.com/yuzuyield/vlkit/compare/main...featX' && ok || bad "ssh-alias slug: $OUT"
+OUT="$(url_for 'git@github.com-yuzuyield:veloctlabs/vlkit.git' featX)"
+printf '%s' "$OUT" | grep -q 'github.com/veloctlabs/vlkit/compare/main...featX' && ok || bad "ssh-alias slug: $OUT"
 
 OUT="$(url_for 'git@github.com:acme/widget.git' fix1)"
 printf '%s' "$OUT" | grep -q 'github.com/acme/widget/compare/main...fix1' && ok || bad "plain-ssh slug: $OUT"
@@ -28,7 +28,7 @@ printf '%s' "$OUT" | grep -q 'github.com/octo/cat/compare/main...devB' && ok || 
 
 echo "fallback exits 0 and yields a usable link:"
 D="$(mktemp -d)"
-( cd "$D" && git init -q && git remote add origin 'git@github.com-yuzuyield:yuzuyield/vlkit.git' \
+( cd "$D" && git init -q && git remote add origin 'git@github.com-yuzuyield:veloctlabs/vlkit.git' \
     && VLKIT_SHIP_NO_GH=1 bash "$OPENPR" branchZ main ); RC=$?
 [ "$RC" = "0" ] && ok || bad "fallback exited non-zero ($RC)"
 ( cd "$D" && VLKIT_SHIP_NO_GH=1 bash "$OPENPR" branchZ main ) | grep -q 'expand=1' && ok || bad "no expand=1 link"

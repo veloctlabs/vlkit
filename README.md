@@ -22,7 +22,7 @@ installer**. Both give the same hooks, commands, and agents.
 ### Plugin (recommended)
 
 ```
-/plugin marketplace add yuzuyield/vlkit
+/plugin marketplace add veloctlabs/vlkit
 /plugin install vlkit@vlkit
 ```
 
@@ -40,7 +40,7 @@ want it.
 Requires `jq`, `git`, and bash (macOS 3.2+ or Linux).
 
 ```bash
-git clone https://github.com/yuzuyield/vlkit ~/.claude/vlkit
+git clone https://github.com/veloctlabs/vlkit ~/.claude/vlkit
 cd ~/.claude/vlkit && bash install.sh
 ```
 

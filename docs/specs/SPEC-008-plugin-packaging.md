@@ -9,7 +9,7 @@ Date: 2026-07-23
 Make vlkit installable via `/plugin` (Claude Code plugin) **without losing** the
 bash installer — the same dual-mode dwarves-kit uses. Add the plugin manifest,
 a plugin-native hook config, path references that resolve in both modes, and a
-plugin-aware `install.sh`, so `/plugin marketplace add yuzuyield/vlkit` →
+plugin-aware `install.sh`, so `/plugin marketplace add veloctlabs/vlkit` →
 `/plugin install vlkit@vlkit` works and `bash install.sh` still works.
 
 ## Non-goals

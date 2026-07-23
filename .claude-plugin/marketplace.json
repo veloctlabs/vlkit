@@ -2,7 +2,7 @@
   "name": "vlkit",
   "description": "vlkit — a bash-first, closed-loop, spec-driven Claude Code workflow.",
   "owner": {
-    "name": "yuzuyield"
+    "name": "veloctlabs"
   },
   "plugins": [
     {
