@@ -1,0 +1,14 @@
+{
+  "name": "vlkit",
+  "description": "vlkit — a bash-first, closed-loop, spec-driven Claude Code workflow.",
+  "owner": {
+    "name": "yuzuyield"
+  },
+  "plugins": [
+    {
+      "name": "vlkit",
+      "source": ".",
+      "description": "Bash-first, closed-loop, spec-driven Claude Code workflow with mechanical safety gates and a verification pipeline."
+    }
+  ]
+}

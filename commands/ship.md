@@ -13,10 +13,10 @@ follow the order exactly.
 3. **Commit.** Stage the change and commit with a conventional-commit subject
    (the commit-format hook enforces this). Reference the spec ID in the body.
 4. **Record proof-of-done** so the ship-gate opens:
-   `bash ~/.claude/vlkit/lib/gate/gate-ledger.sh proof SPEC-NNN "$(git rev-parse --short HEAD)"`
+   `bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/gate/gate-ledger.sh proof SPEC-NNN "$(git rev-parse --short HEAD)"`
 5. **Publish.** Push the **branch** (never main — the safety-gate blocks a direct
    main push; always a PR). Then open the PR with the fallback-safe helper:
-   `bash ~/.claude/vlkit/lib/ship/open-pr.sh <branch> [base]`. It uses `gh pr
+   `bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/ship/open-pr.sh <branch> [base]`. It uses `gh pr
    create --fill` when `gh` is available and authenticated, and otherwise prints
    the GitHub compare URL for you to open the PR manually — so ship always
    finishes even when `gh` isn't set up. Add a PR body summarizing the spec, the

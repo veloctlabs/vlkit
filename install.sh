@@ -23,16 +23,25 @@ SRC_SETTINGS="$REPO/settings.json"
 
 MODE="install"
 WITH=""
+PLUGIN_COMPAT=0
 prev=""
 for arg in "$@"; do
   case "$arg" in
-    --uninstall) MODE="uninstall" ;;
-    --prune)     MODE="install" ;;
-    --with=*)    WITH="${arg#--with=}" ;;
-    *)           [ "$prev" = "--with" ] && WITH="$arg" ;;
+    --uninstall)     MODE="uninstall" ;;
+    --prune)         MODE="install" ;;
+    --plugin-compat) PLUGIN_COMPAT=1 ;;
+    --with=*)        WITH="${arg#--with=}" ;;
+    *)               [ "$prev" = "--with" ] && WITH="$arg" ;;
   esac
   prev="$arg"
 done
+
+# Auto-detect: if the vlkit plugin is already installed, default to compat mode
+# (the plugin owns the hooks + commands; the bash install would double-register).
+if [ "$PLUGIN_COMPAT" = "0" ] && [ -d "$HOME/.claude/plugins" ] \
+   && grep -rqsl '"name"[[:space:]]*:[[:space:]]*"vlkit"' "$HOME/.claude/plugins" 2>/dev/null; then
+  PLUGIN_COMPAT=1
+fi
 
 command -v jq >/dev/null 2>&1 || { echo "vlkit: 'jq' is required." >&2; exit 1; }
 
@@ -115,9 +124,21 @@ fi
 
 chmod_scripts
 require_repo_link
+
+if [ "$PLUGIN_COMPAT" = "1" ]; then
+  # Plugin mode: the Claude Code plugin already registers hooks (hooks/hooks.json)
+  # and commands/agents. Do NOT merge them into settings.json (double-fire) or
+  # re-register commands. Only keep the ~/.claude/vlkit symlink so any bare-path
+  # `$HOME/.claude/vlkit/lib/...` reference still resolves.
+  echo "vlkit: plugin-compat install."
+  echo "  repo symlink -> $LINK  (for bare-path lib references)"
+  echo "  hooks/commands/agents are owned by the installed plugin — settings.json untouched."
+  exit 0
+fi
+
 merge_settings
 register_commands_agents
-echo "vlkit: installed."
+echo "vlkit: installed (bash mode)."
 echo "  repo         -> $LINK"
 echo "  settings     -> merged into $SETTINGS"
 echo "  commands     -> $CMD_DIR/ (invoke as /vlkit:<name>)"

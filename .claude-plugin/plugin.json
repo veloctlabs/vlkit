@@ -1,0 +1,18 @@
+{
+  "name": "vlkit",
+  "version": "0.7.0",
+  "description": "Bash-first, closed-loop, spec-driven Claude Code workflow: safety gates, worker→verifier→fix-agent pipeline, adversarial verification, and provenance.",
+  "author": {
+    "name": "yuzuyield"
+  },
+  "homepage": "https://github.com/yuzuyield/vlkit",
+  "repository": "https://github.com/yuzuyield/vlkit",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "spec-driven",
+    "verification",
+    "hooks",
+    "subagents"
+  ]
+}

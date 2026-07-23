@@ -11,11 +11,11 @@ several exist, ask which. Read its Tasks, Acceptance criteria, Verify, and Lane.
 
 **Model per task:** read each task's optional weight tag (`[light]` / `[heavy]`
 after the number; none = default). Resolve the worker model with
-`bash ~/.claude/vlkit/lib/config/vlkit-config.sh model <weight>` and dispatch
+`bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/config/vlkit-config.sh model <weight>` and dispatch
 that task's worker on the returned model (Agent `model` override).
 
 **Record the run** so `stats timeline` can chart it: call
-`bash ~/.claude/vlkit/lib/gate/gate-ledger.sh run-start <SPEC-ID> <task-id> <model>`
+`bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/gate/gate-ledger.sh run-start <SPEC-ID> <task-id> <model>`
 immediately before dispatching the worker, and `... run-end <SPEC-ID> <task-id>`
 once the task reaches PASS.
 

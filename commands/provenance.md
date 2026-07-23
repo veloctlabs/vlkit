@@ -7,7 +7,7 @@ how it was built and verified, straight from the gate ledger.
 
 1. Take the spec id (e.g. `SPEC-006`); if omitted, use the most recently shipped
    spec in `docs/specs/`.
-2. Run `bash ~/.claude/vlkit/lib/provenance.sh <spec>` for the human-readable
+2. Run `bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/provenance.sh <spec>` for the human-readable
    markdown trace, or `... <spec> --json` for a machine-readable object.
 3. Present it: the table of task → model → duration, the proof-of-done commit,
    and the verdict (`shipped` vs `UNPROVEN` if no proof row exists).

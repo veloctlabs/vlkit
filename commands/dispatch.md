@@ -11,7 +11,7 @@ Independent tasks run at the same time, each in its own git worktree; merges are
 
 **Plan the waves:**
 ```
-bash ~/.claude/vlkit/lib/dispatch/waves.sh <spec-file>
+bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/dispatch/waves.sh <spec-file>
 ```
 This prints `wave N: <ids…>`. Tasks in the same wave are independent and run in
 parallel; later waves depend on earlier ones.
@@ -19,7 +19,7 @@ parallel; later waves depend on earlier ones.
 **Per wave, in order:**
 
 1. **Provision** a worktree for each task in the wave:
-   `bash ~/.claude/vlkit/lib/dispatch/worktree.sh provision <task-id>` — it
+   `bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/dispatch/worktree.sh provision <task-id>` — it
    prints the worktree path (branch `vlkit/<task-id>` off HEAD).
 2. **Dispatch workers in parallel** — one Agent per task, **in a single message**
    so they run concurrently. Use a built-in specialized agent where one fits, or
@@ -33,7 +33,7 @@ parallel; later waves depend on earlier ones.
    acceptance criteria. A task that fails routes to `fix-agent` (≤2), same as
    `/vlkit:execute`.
 4. **Merge sequentially** — for each passed task, in id order:
-   `bash ~/.claude/vlkit/lib/dispatch/worktree.sh merge <task-id>`.
+   `bash ${CLAUDE_PLUGIN_ROOT:-$HOME/.claude/vlkit}/lib/dispatch/worktree.sh merge <task-id>`.
    - `MERGED <id>` → continue.
    - `CONFLICT <id> <files>` → **STOP the whole run**. Report the conflicting
      files and which two tasks collided. Do not merge anything else, do not

@@ -16,10 +16,31 @@ careful.
 
 ## Install
 
+vlkit installs two ways — as a Claude Code **plugin** or via the **bash
+installer**. Both give the same hooks, commands, and agents.
+
+### Plugin (recommended)
+
+```
+/plugin marketplace add yuzuyield/vlkit
+/plugin install vlkit@vlkit
+```
+
+Hooks (`hooks/hooks.json`), commands, and agents load automatically. Optional:
+run `bash install.sh --plugin-compat` once to symlink `~/.claude/vlkit` so any
+bare-path `$HOME/.claude/vlkit/lib/...` reference resolves — it will NOT
+re-register hooks (the plugin already owns them).
+
+The **status-line HUD is the one thing the plugin can't set** (the v1 plugin
+schema doesn't configure a status line) — install via the bash path below if you
+want it.
+
+### Bash installer
+
 Requires `jq`, `git`, and bash (macOS 3.2+ or Linux).
 
 ```bash
-git clone <this-repo> ~/.claude/vlkit
+git clone https://github.com/yuzuyield/vlkit ~/.claude/vlkit
 cd ~/.claude/vlkit && bash install.sh
 ```
 
