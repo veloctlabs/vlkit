@@ -46,6 +46,7 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 | `review` | Single-pass (or `code-reviewer`-backed) review of the diff. Advisory verdict SHIP/FIX-FIRST. |
 | `ship` | Verify → version bump → changelog → conventional commit → record proof-of-done → push branch + open PR. If `gh` is missing/unauthenticated, `lib/ship/open-pr.sh` **falls back** to printing the GitHub compare URL so ship still finishes (never a direct-main push). |
 | `retro` | Short retrospective appended to `docs/RETRO.md`. |
+| `pitch` | Assemble an outward buy-in doc for a shipped spec from the spec + provenance + proof-of-done. Outcome-first, ends in an ask, never fabricates. |
 
 ## Agents
 
