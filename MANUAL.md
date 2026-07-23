@@ -39,6 +39,7 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 | `think` | 6 forcing questions before any spec. Ends in a BUILD/RETHINK/KILL brief. Advisory. |
 | `spec` | Write `docs/specs/SPEC-NNN-<slug>.md` (Goal, Non-goals, Tasks, Acceptance criteria, Verify, Lane). |
 | `execute` | Orchestrate worker → task-verifier → fix-agent over the spec's tasks. Stops to ask on escalation. |
+| `dispatch` | Parallel `execute`: run a wave's independent tasks in git worktrees at once, merge sequentially, **stop on conflict**. Uses `(deps: …)` task syntax. |
 | `verify` | Re-run the spec's Verify commands read-only → PASS / FAIL / INCONCLUSIVE. |
 | `review` | Single-pass (or `code-reviewer`-backed) review of the diff. Advisory verdict SHIP/FIX-FIRST. |
 | `ship` | Verify → version bump → changelog → conventional commit → record proof-of-done → push + PR. |
@@ -82,6 +83,21 @@ bash ~/.claude/vlkit/lib/config/vlkit-config.sh model heavy   # -> opus (default
 
 `/vlkit:execute` calls this per task and records `run-start`/`run-end` around
 each so `stats timeline` can chart real durations by model.
+
+## Parallel dispatch (worktrees)
+
+```bash
+bash ~/.claude/vlkit/lib/dispatch/waves.sh <spec>          # print topological waves; rejects cycles
+bash ~/.claude/vlkit/lib/dispatch/worktree.sh provision <id> [base]  # add .vlkit/worktrees/<id> on branch vlkit/<id>
+bash ~/.claude/vlkit/lib/dispatch/worktree.sh merge <id>   # MERGED <id> | CONFLICT <id> <files> (aborts, exit≠0)
+bash ~/.claude/vlkit/lib/dispatch/worktree.sh cleanup <id> # remove worktree + branch
+bash ~/.claude/vlkit/lib/dispatch/worktree.sh list         # active vlkit worktrees
+```
+
+Task dependency syntax in a spec: `3. [heavy] name (deps: 1 2) — …`. Merges are
+sequential; a `CONFLICT` stops the run and is never auto-resolved. Worktrees live
+under `<project>/.vlkit/worktrees/` (git-ignored via the shipped `.vlkit/` rule —
+consumer repos should ignore `.vlkit/` too).
 
 Location follows `[ledger] location` in config: `shared`
 (`~/.claude/vlkit/logs/`) or `isolated` (`<project>/.vlkit/logs/`).

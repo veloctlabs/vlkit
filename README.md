@@ -41,10 +41,31 @@ In any project, run one lap. A tiny change is the best first try:
 2. `/vlkit:think` — describe the change; it throws 6 forcing questions at it.
 3. `/vlkit:spec` — writes the contract to `docs/specs/SPEC-NNN-<slug>.md`.
 4. `/vlkit:execute` — worker builds a task → task-verifier checks it → fix-agent
-   retries fixable failures (max 2) → next task.
+   retries fixable failures (max 2) → next task. (Or `/vlkit:dispatch` to run
+   independent tasks in parallel — see below.)
 5. `/vlkit:review` then `/vlkit:ship` — review, then version bump, changelog,
    conventional commit, PR (and the proof-of-done the ship-gate requires).
 6. `/vlkit:retro` — capture one improvement for next time.
+
+## Parallel dispatch
+
+`/vlkit:dispatch` is the parallel sibling of `/vlkit:execute`. Tasks may declare
+dependencies; independent ones run **at the same time**, each in its own git
+worktree, and are **merged back sequentially**:
+
+```
+## Tasks
+1. tier-defaults — ...
+2. provenance — ...
+3. [heavy] token-ledger (deps: 1 2) — ...   # waits for 1 and 2
+```
+
+`lib/dispatch/waves.sh` groups tasks into waves (topological); each wave's tasks
+get a worktree (`.vlkit/worktrees/<id>` on branch `vlkit/<id>`), run in parallel
+on their resolved model, then merge one by one. There is **no disjointness
+check** — a merge conflict **stops the run** and is reported for a human to
+resolve (never auto-merged). `stats timeline` then shows the overlap and how much
+wall-clock the parallelism saved.
 
 `/vlkit:execute` runs the build semi-autonomously, but only **after you approve
 a spec**, and it stops to ask you whenever a task can't be fixed automatically.
