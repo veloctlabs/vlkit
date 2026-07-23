@@ -40,6 +40,7 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 | `spec` | Write `docs/specs/SPEC-NNN-<slug>.md` (Goal, Non-goals, Tasks, Acceptance criteria, Verify, Lane). |
 | `execute` | Orchestrate worker → task-verifier → fix-agent over the spec's tasks. Stops to ask on escalation. |
 | `dispatch` | Parallel `execute`: run a wave's independent tasks in git worktrees at once, merge sequentially, **stop on conflict**. Uses `(deps: …)` task syntax. |
+| `draft-agent` | Synthesize a reusable agent into the project's `.claude/agents/` via `meta-agent`, from a role description. |
 | `verify` | Re-run the spec's Verify commands read-only → PASS / FAIL / INCONCLUSIVE. |
 | `review` | Single-pass (or `code-reviewer`-backed) review of the diff. Advisory verdict SHIP/FIX-FIRST. |
 | `ship` | Verify → version bump → changelog → conventional commit → record proof-of-done → push + PR. |
@@ -53,6 +54,17 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 | `fix-agent` | edit + test runners | Fix exactly the flagged finding, minimal change, ≤2 attempts per task. |
 | `code-reviewer` | read-only + git diff | One-lens review, findings ranked by severity. |
 | `spec-writer` | read + write | Draft a spec from a brief non-interactively. |
+| `security-reviewer` | read-only + git diff | Audit a change for injection, secret exposure, authz gaps, path traversal, unsafe deserialization. Verdict SAFE/FIX-FIRST. |
+| `test-writer` | edit + test runners | Write tests covering a change — happy path, edges, and the fixed failure. |
+| `researcher` | read-only + git log | Investigate architecture, prior art, conventions, pitfalls before a spec; returns a findings brief. |
+| `db-migration-worker` | edit + goose/psql | Write reversible up/down migrations; flag destructive DDL, never silent data loss. |
+| `meta-agent` | read + write | Synthesize a new agent definition to a given path (least-privilege tools, focused body). Backs `/vlkit:draft-agent`. |
+
+**Growing the roster:** prefer synthesis over cloning. `/vlkit:draft-agent
+<role>` dispatches `meta-agent` to write a reusable agent into the project's
+`.claude/agents/` (version-controlled, loads next session). For a one-off role,
+`/vlkit:execute`/`/vlkit:dispatch` synthesize a worker inline. Freeze a
+synthesized agent into a static file only once the same role recurs.
 
 ## Risk lanes
 

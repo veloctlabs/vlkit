@@ -23,8 +23,11 @@ once the task reaches PASS.
 
 1. **Dispatch a worker** on the task's resolved model (a general subagent, or a
    specialized one — security, migration, frontend, docs — if the task clearly
-   needs that role). Give it the single task, the relevant acceptance criteria,
-   and the repo context. It implements ONLY that task.
+   needs that role). Prefer a built-in agent (`security-reviewer`,
+   `test-writer`, `researcher`, `db-migration-worker`, …); if none fits,
+   **synthesize one on the fly** via the `meta-agent`, or persist a reusable one
+   with `/vlkit:draft-agent`. Give the worker the single task, the relevant
+   acceptance criteria, and the repo context. It implements ONLY that task.
 2. **Dispatch the `task-verifier` agent** (read-only) with the task + its
    acceptance criteria + the Verify commands. It returns
    `PASS` / `FAIL:fixable` / `FAIL:escalate`.

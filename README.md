@@ -78,8 +78,12 @@ It is not an "do everything from one sentence" bot.
   Advisory: `context-readiness`, `context-hints`, `anti-rationalization`,
   `session-state-save`, `statusline`.
 - **8 commands** — the lifecycle above plus `/vlkit:start`.
-- **4 agents** — `task-verifier` (read-only gate), `fix-agent` (bounded fixer),
-  `code-reviewer`, `spec-writer`.
+- **9 agents** — `task-verifier` (read-only gate), `fix-agent` (bounded fixer),
+  `code-reviewer`, `spec-writer`, `security-reviewer`, `test-writer`,
+  `researcher`, `db-migration-worker`, and `meta-agent` (synthesizes new
+  agents). Need a role none of these cover? `/vlkit:draft-agent` writes a
+  reusable one into the project's `.claude/agents/`, or the orchestrator
+  synthesizes one on the fly.
 - **lib/** — `gate-ledger.sh` (proof-of-done record), `stats.sh` (read-only
   projection), `vlkit-config.sh` (the one config resolver).
 

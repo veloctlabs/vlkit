@@ -22,7 +22,9 @@ parallel; later waves depend on earlier ones.
    `bash ~/.claude/vlkit/lib/dispatch/worktree.sh provision <task-id>` — it
    prints the worktree path (branch `vlkit/<task-id>` off HEAD).
 2. **Dispatch workers in parallel** — one Agent per task, **in a single message**
-   so they run concurrently. Each worker runs on its resolved model
+   so they run concurrently. Use a built-in specialized agent where one fits, or
+   **synthesize one via the `meta-agent`** (persist with `/vlkit:draft-agent`)
+   when no built-in covers the role. Each worker runs on its resolved model
    (`vlkit-config.sh model <weight>` from the task's `[light]/[heavy]` tag) and
    works ONLY inside its own worktree path. Record
    `gate-ledger.sh run-start <SPEC> <task> <model>` before and
