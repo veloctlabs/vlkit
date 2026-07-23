@@ -45,7 +45,7 @@ while IFS= read -r seg; do
     rm)
       # Block recursive+force removals except an explicit build-artifact allowlist.
       if printf '%s' "$s" | grep -qE '(^| )-[a-zA-Z]*r[a-zA-Z]*f|(^| )-[a-zA-Z]*f[a-zA-Z]*r|(^| )-rf|(^| )-fr'; then
-        if ! printf '%s' "$s" | grep -qE '(node_modules|dist|build|\.next|target|coverage|\.cache|/tmp/)'; then
+        if ! printf '%s' "$s" | grep -qE '(node_modules|dist|build|\.next|target|coverage|\.cache|/tmp/|/private/tmp/|/var/folders/|/private/var/folders/)'; then
           block "rm-rf" "recursive force-delete outside the build-artifact allowlist"
         fi
       fi ;;

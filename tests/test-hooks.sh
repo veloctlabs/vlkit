@@ -28,6 +28,9 @@ run safety-gate.sh "$(bash_json 'git push origin feature/x')";       expect_rc "
 run safety-gate.sh "$(bash_json 'git push --force origin dev')";     expect_rc "block force push" 2
 run safety-gate.sh "$(bash_json 'rm -rf /some/project/src')";        expect_rc "block rm -rf src" 2
 run safety-gate.sh "$(bash_json 'rm -rf node_modules')";             expect_rc "allow rm -rf node_modules" 0
+run safety-gate.sh "$(bash_json 'rm -rf /var/folders/x1/abc/T/tmp.QQQ')"; expect_rc "allow rm -rf macOS temp" 0
+run safety-gate.sh "$(bash_json 'rm -rf /private/tmp/claude-501/scratch')"; expect_rc "allow rm -rf /private/tmp" 0
+run safety-gate.sh "$(bash_json 'rm -rf /Users/me/project/src')";    expect_rc "still block project path" 2
 run safety-gate.sh "$(bash_json 'git reset --hard HEAD~1')";         expect_rc "block reset --hard" 2
 run safety-gate.sh "$(bash_json 'echo "do not rm -rf things"')";     expect_rc "prose not matched" 0
 run safety-gate.sh "$(bash_json 'psql -c "DROP TABLE users"')";      expect_rc "block drop table" 2
