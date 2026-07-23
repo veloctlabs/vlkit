@@ -44,7 +44,7 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 | `provenance` | Emit a machine-checkable trace for a spec (task → model → proof → commit) from the ledger, markdown or `--json`. |
 | `verify` | Re-run the spec's Verify commands read-only → PASS / FAIL / INCONCLUSIVE. **Adversarial mode**: 3 `adversarial-verifier`s try to refute; pass only if a majority can't. |
 | `review` | Single-pass (or `code-reviewer`-backed) review of the diff. Advisory verdict SHIP/FIX-FIRST. |
-| `ship` | Verify → version bump → changelog → conventional commit → record proof-of-done → push + PR. |
+| `ship` | Verify → version bump → changelog → conventional commit → record proof-of-done → push branch + open PR. If `gh` is missing/unauthenticated, `lib/ship/open-pr.sh` **falls back** to printing the GitHub compare URL so ship still finishes (never a direct-main push). |
 | `retro` | Short retrospective appended to `docs/RETRO.md`. |
 
 ## Agents
