@@ -51,6 +51,16 @@ cmd_get() {
   printf '%s\n' "$fallback"
 }
 
+# Resolve the model for a task weight: models.<weight> -> models.default -> sonnet.
+cmd_model() {
+  local weight="${1:-default}" val
+  val=$(cmd_get "models.$weight" "")
+  [ -n "$val" ] && { printf '%s\n' "$val"; return 0; }
+  val=$(cmd_get "models.default" "")
+  [ -n "$val" ] && { printf '%s\n' "$val"; return 0; }
+  printf '%s\n' "sonnet"
+}
+
 # Resolve where the ledger/logs live for the current project.
 cmd_logdir() {
   local loc
@@ -64,6 +74,7 @@ cmd_logdir() {
 
 case "${1:-}" in
   get)     shift; cmd_get "$@" ;;
+  model)   shift; cmd_model "$@" ;;
   logdir)  cmd_logdir ;;
-  *) echo "usage: vlkit-config.sh {get <section.key> [fallback] | logdir}" >&2; exit 1 ;;
+  *) echo "usage: vlkit-config.sh {get <section.key> [fallback] | model <weight> | logdir}" >&2; exit 1 ;;
 esac

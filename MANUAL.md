@@ -65,8 +65,23 @@ lane is advice to the orchestrator, plus what `statusline` displays.
 bash ~/.claude/vlkit/lib/gate/gate-ledger.sh record <kind> <spec> <ref> [note]
 bash ~/.claude/vlkit/lib/gate/gate-ledger.sh proof  <spec> <short-sha>   # opens the ship-gate for that HEAD
 bash ~/.claude/vlkit/lib/gate/gate-ledger.sh has-proof <short-sha>       # exit 0 if a proof exists
-bash ~/.claude/vlkit/lib/stats/stats.sh                                   # read-only projection
+bash ~/.claude/vlkit/lib/gate/gate-ledger.sh run-start <spec> <task> <model>  # mark a task's worker start
+bash ~/.claude/vlkit/lib/gate/gate-ledger.sh run-end   <spec> <task>          # mark it done (epoch stored in note)
+bash ~/.claude/vlkit/lib/stats/stats.sh                                   # summary projection
+bash ~/.claude/vlkit/lib/stats/stats.sh timeline [spec]                    # Gantt + wall/worker/parallel_potential
 ```
+
+## Model per task
+
+Tag a spec task `[light]` or `[heavy]` (after its number) to pick the worker
+model; `[models]` in `vlkit.toml` maps weight → model. Resolve one directly:
+
+```bash
+bash ~/.claude/vlkit/lib/config/vlkit-config.sh model heavy   # -> opus (default map)
+```
+
+`/vlkit:execute` calls this per task and records `run-start`/`run-end` around
+each so `stats timeline` can chart real durations by model.
 
 Location follows `[ledger] location` in config: `shared`
 (`~/.claude/vlkit/logs/`) or `isolated` (`<project>/.vlkit/logs/`).

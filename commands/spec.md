@@ -26,7 +26,8 @@ Date: <YYYY-MM-DD>
 
 ## Tasks
 1. <task> — <one line>
-2. ...
+2. [heavy] <task> — <one line>   # optional [light]/[heavy] weight tag picks the worker model (see [models] in vlkit.toml); no tag = default
+3. ...
 
 ## Acceptance criteria
 1. <verifiable, numbered — how the verifier decides PASS>

@@ -62,6 +62,31 @@ It is not an "do everything from one sentence" bot.
 - **lib/** — `gate-ledger.sh` (proof-of-done record), `stats.sh` (read-only
   projection), `vlkit-config.sh` (the one config resolver).
 
+## Model per task + timeline
+
+A spec task may carry a weight tag so heavier work runs on a stronger model:
+
+```
+## Tasks
+1. [light] docs-index — regenerate the index
+2. [heavy] token-ledger — double-entry accounting core
+3. release-cut — tag and changelog        # no tag = default weight
+```
+
+`[models]` in `vlkit.toml` maps weight → model (`default`/`light`/`heavy`).
+`/vlkit:execute` resolves each task's model and dispatches the worker on it, and
+records the run so you can chart it:
+
+```bash
+bash ~/.claude/vlkit/lib/stats/stats.sh timeline          # all runs
+bash ~/.claude/vlkit/lib/stats/stats.sh timeline SPEC-002 # one spec
+```
+
+The timeline prints a per-task bar (task · model · duration) and a summary:
+`wall` (first start → last end), `worker` (Σ durations), and
+`parallel_potential` (the floor if every task ran at once) — the gap between
+`worker` and `parallel_potential` is what parallel dispatch (SPEC-003) closes.
+
 ## Configure per project
 
 Drop a `.vlkit.toml` at a project's root to override defaults (see `vlkit.toml`
@@ -70,6 +95,9 @@ for every key). Common ones:
 ```toml
 [ledger]
 location = "isolated"   # keep this project's ledger in ./.vlkit/logs instead of the shared one
+
+[models]
+heavy = "opus"          # which model [heavy]-tagged tasks run on
 
 [hints]
 migration = "run the db-migration checklist before editing schema"

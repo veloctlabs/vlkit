@@ -35,10 +35,20 @@ cmd_has_proof() {  # <ref>
   grep -qE "\| proof-of-done \|.*\| ${ref} \|" "$LEDGER"
 }
 
+cmd_run_start() {  # <spec> <task> <model>
+  cmd_record "run-start" "${1:-}" "${2:-}" "model=${3:-};epoch=$(date +%s)"
+}
+
+cmd_run_end() {    # <spec> <task>
+  cmd_record "run-end" "${1:-}" "${2:-}" "epoch=$(date +%s)"
+}
+
 case "${1:-}" in
   record)    shift; cmd_record "$@" ;;
   proof)     shift; cmd_proof "$@" ;;
   has-proof) shift; cmd_has_proof "$@" ;;
+  run-start) shift; cmd_run_start "$@" ;;
+  run-end)   shift; cmd_run_end "$@" ;;
   path)      echo "$LEDGER" ;;
-  *) echo "usage: gate-ledger.sh {record|proof|has-proof|path} ..." >&2; exit 1 ;;
+  *) echo "usage: gate-ledger.sh {record|proof|has-proof|run-start|run-end|path} ..." >&2; exit 1 ;;
 esac

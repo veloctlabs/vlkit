@@ -9,12 +9,22 @@ dispatch subagents and route on their verdicts.
 **Input:** a `docs/specs/SPEC-NNN-*.md` with `Status: DRAFT` or `VALIDATED`. If
 several exist, ask which. Read its Tasks, Acceptance criteria, Verify, and Lane.
 
+**Model per task:** read each task's optional weight tag (`[light]` / `[heavy]`
+after the number; none = default). Resolve the worker model with
+`bash ~/.claude/vlkit/lib/config/vlkit-config.sh model <weight>` and dispatch
+that task's worker on the returned model (Agent `model` override).
+
+**Record the run** so `stats timeline` can chart it: call
+`bash ~/.claude/vlkit/lib/gate/gate-ledger.sh run-start <SPEC-ID> <task-id> <model>`
+immediately before dispatching the worker, and `... run-end <SPEC-ID> <task-id>`
+once the task reaches PASS.
+
 **Loop — one task at a time, in order:**
 
-1. **Dispatch a worker** (a general subagent, or a specialized one — security,
-   migration, frontend, docs — if the task clearly needs that role). Give it the
-   single task, the relevant acceptance criteria, and the repo context. It
-   implements ONLY that task.
+1. **Dispatch a worker** on the task's resolved model (a general subagent, or a
+   specialized one — security, migration, frontend, docs — if the task clearly
+   needs that role). Give it the single task, the relevant acceptance criteria,
+   and the repo context. It implements ONLY that task.
 2. **Dispatch the `task-verifier` agent** (read-only) with the task + its
    acceptance criteria + the Verify commands. It returns
    `PASS` / `FAIL:fixable` / `FAIL:escalate`.

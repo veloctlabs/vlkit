@@ -1,0 +1,3 @@
+2026-07-23T03:14:55Z | BLOCKED | rm-rf | /Users/runi/Documents/workspace/runi/per-cex | cd /Users/runi/Documents/workspace/runi/vlkit
+echo "=== full test suite ===" 
+bash tests/test-hooks.sh >/dev/null 2>&1 &

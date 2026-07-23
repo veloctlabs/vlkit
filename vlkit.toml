@@ -15,6 +15,14 @@ location = "shared"
 # Default risk lane when a spec header omits one.
 default = "normal"
 
+[models]
+# Model assigned to a task by its weight tag. A spec task may carry a leading
+# [light] or [heavy] tag after its number, e.g.  "3. [heavy] token-ledger — ...".
+# No tag → default. Values are model names understood by the Agent tool.
+default = "sonnet"
+light   = "sonnet"
+heavy   = "opus"
+
 [gates]
 # Advisory gates can be silenced per project; blocking gates cannot.
 ship_requires_proof = true    # ship-gate blocks push/PR without a proof-of-done row
