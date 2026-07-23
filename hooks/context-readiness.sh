@@ -7,8 +7,9 @@ INPUT=$(cat 2>/dev/null || true)
 
 echo "## vlkit"
 if [ -d docs/specs ]; then
-  n=$(find docs/specs -name 'SPEC-*.md' 2>/dev/null | wc -l | tr -d ' ')
-  draft=$(grep -lE '^Status:[[:space:]]*DRAFT' docs/specs/SPEC-*.md 2>/dev/null | wc -l | tr -d ' ')
+  # `|| true` guards against grep/find exit-1 (no matches) tripping set -e.
+  n=$( { find docs/specs -name 'SPEC-*.md' 2>/dev/null || true; } | wc -l | tr -d ' ')
+  draft=$( { grep -lE '^Status:[[:space:]]*DRAFT' docs/specs/SPEC-*.md 2>/dev/null || true; } | wc -l | tr -d ' ')
   echo "- specs: $n total, $draft in DRAFT (docs/specs/)"
   if [ "$draft" -gt 0 ]; then
     echo "- next: a DRAFT spec exists — /vlkit:execute to build it, or /vlkit:spec-validate to stress-test."
