@@ -40,6 +40,13 @@ once the task reaches PASS.
 **Lane depth:** `tiny` may skip the verifier for trivial doc/config edits;
 `full` and `bug` always verify. Never skip verification on code changes.
 
+**Adversarial verification (high-stakes tasks):** for a task touching security,
+money, auth, or migrations, escalate step 2 from a single `task-verifier` to
+**adversarial** mode — dispatch **3** `adversarial-verifier` agents in parallel,
+each trying to REFUTE the acceptance criteria (default `refuted=true` when
+uncertain). The task passes only if a **majority cannot refute** it (fewer than
+two refutations); otherwise route to `fix-agent` with the refutations.
+
 When all tasks pass, run the spec's Verify commands once more end-to-end, then
 tell the user to run `/vlkit:review` and `/vlkit:ship`. Do not push or commit
 here.

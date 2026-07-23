@@ -39,6 +39,14 @@ Date: <YYYY-MM-DD>
 
 4. Keep acceptance criteria **verifiable** (a read-only agent must be able to
    check each one). No "works well" — say what output/exit proves it.
-5. Report the path and tell the user to review it, then run `/vlkit:execute`.
+5. **Spec-as-tests:** after the criteria, generate a **failing test skeleton**
+   with **one test per acceptance criterion** (each test names the criterion
+   number it covers). Detect the project's test framework (go test / vitest /
+   pytest / cargo / `bash tests/*`) and write the stubs in it, kept **1:1** with
+   the criteria; if no framework is detected, write
+   `docs/specs/SPEC-NNN-<slug>.tests.md` — a numbered, checkable checklist. The
+   point: `/vlkit:execute` then makes real tests go green, so the gate is tests
+   passing, not a verifier believing prose.
+6. Report the paths and tell the user to review, then run `/vlkit:execute`.
 
 Do NOT write implementation code in this command.

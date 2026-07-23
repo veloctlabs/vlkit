@@ -130,6 +130,21 @@ migration = "run the db-migration checklist before editing schema"
 
 Only commands and `lib/` read config; the hot-path hooks never do.
 
+## Trust the loop, don't just automate it
+
+Three features attack the real question — *how much can you trust a PASS?*
+
+- **Spec-as-tests.** `/vlkit:spec` emits a failing test per acceptance criterion,
+  so `/vlkit:execute` makes real tests go green — the gate is tests passing, not
+  a verifier reading prose and believing it.
+- **Adversarial verification.** For high-stakes tasks, `/vlkit:verify` and
+  `/vlkit:execute` run **3** `adversarial-verifier` agents that each try to
+  *refute* the work (default `refuted=true` when uncertain); it passes only if a
+  majority can't. Harder to fool than one lenient reader.
+- **Provenance.** `/vlkit:provenance <spec>` emits a machine-checkable trace
+  (task → model → duration → proof-of-done → commit) from the ledger, as
+  markdown or `--json` — for a PR, an audit, or a thesis methodology section.
+
 ## Design rules
 
 1. **Closed loop, not open.** worker → read-only verifier → fix-agent (≤2) →

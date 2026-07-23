@@ -37,11 +37,12 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 |---|---|
 | `start` | Detect state, suggest the next command. Entry point. |
 | `think` | 6 forcing questions before any spec. Ends in a BUILD/RETHINK/KILL brief. Advisory. |
-| `spec` | Write `docs/specs/SPEC-NNN-<slug>.md` (Goal, Non-goals, Tasks, Acceptance criteria, Verify, Lane). |
-| `execute` | Orchestrate worker → task-verifier → fix-agent over the spec's tasks. Stops to ask on escalation. |
+| `spec` | Write `docs/specs/SPEC-NNN-<slug>.md` (Goal, Non-goals, Tasks, Acceptance criteria, Verify, Lane) **plus a spec-as-tests skeleton**: one failing test per acceptance criterion (framework-detected, or a `.tests.md` checklist fallback), kept 1:1. |
+| `execute` | Orchestrate worker → task-verifier → fix-agent over the spec's tasks. Stops to ask on escalation. High-stakes tasks escalate to **adversarial mode** (3 `adversarial-verifier`s; pass only if a majority can't refute). |
 | `dispatch` | Parallel `execute`: run a wave's independent tasks in git worktrees at once, merge sequentially, **stop on conflict**. Uses `(deps: …)` task syntax. |
 | `draft-agent` | Synthesize a reusable agent into the project's `.claude/agents/` via `meta-agent`, from a role description. |
-| `verify` | Re-run the spec's Verify commands read-only → PASS / FAIL / INCONCLUSIVE. |
+| `provenance` | Emit a machine-checkable trace for a spec (task → model → proof → commit) from the ledger, markdown or `--json`. |
+| `verify` | Re-run the spec's Verify commands read-only → PASS / FAIL / INCONCLUSIVE. **Adversarial mode**: 3 `adversarial-verifier`s try to refute; pass only if a majority can't. |
 | `review` | Single-pass (or `code-reviewer`-backed) review of the diff. Advisory verdict SHIP/FIX-FIRST. |
 | `ship` | Verify → version bump → changelog → conventional commit → record proof-of-done → push + PR. |
 | `retro` | Short retrospective appended to `docs/RETRO.md`. |
@@ -59,6 +60,7 @@ Debug any hook with `VLKIT_DEBUG=1`. Blocked actions are appended to
 | `researcher` | read-only + git log | Investigate architecture, prior art, conventions, pitfalls before a spec; returns a findings brief. |
 | `db-migration-worker` | edit + goose/psql | Write reversible up/down migrations; flag destructive DDL, never silent data loss. |
 | `meta-agent` | read + write | Synthesize a new agent definition to a given path (least-privilege tools, focused body). Backs `/vlkit:draft-agent`. |
+| `adversarial-verifier` | read-only + test runners | Tries to REFUTE that a task meets its criteria (default refuted=true when unsure). Run 3 in parallel; pass only if a majority can't refute. |
 
 **Growing the roster:** prefer synthesis over cloning. `/vlkit:draft-agent
 <role>` dispatches `meta-agent` to write a reusable agent into the project's
